@@ -1,0 +1,18 @@
+// export const server = "http://localhost:8080";
+export const server = "https://inneedjobs.herokuapp.com";
+
+const apiList = {
+  login: `${server}/auth/login`,
+  signup: `${server}/auth/signup`,
+  uploadResume: `${server}/upload/resume`,
+  uploadProfileImage: `${server}/upload/profile`,
+  jobs: `${server}/api/jobs`,
+  applications: `${server}/api/applications`,
+  rating: `${server}/api/rating`,
+  user: `${server}/api/user`,
+  applicants: `${server}/api/applicants`,
+  pdfPost:`${server}/api/cv`,
+  pdfGet:`${server}/api/resume`
+};
+
+export default apiList;
