@@ -1,4 +1,4 @@
-import React,{ useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Button,
   Chip,
@@ -11,7 +11,7 @@ import {
 import Rating from "@material-ui/lab/Rating";
 import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
+import { useMediaQuery } from '../Media.tsx'
 import { SetPopupContext } from "../App";
 import apiList from "../lib/apiList";
 
@@ -148,7 +148,7 @@ const ApplicationTile = (props) => {
           </Grid>
           <Grid item>Applied On: {appliedOn.toLocaleDateString()}</Grid>
           {application.status === "accepted" ||
-          application.status === "finished" ? (
+            application.status === "finished" ? (
             <Grid item>Joined On: {joinedOn.toLocaleDateString()}</Grid>
           ) : null}
         </Grid>
@@ -165,7 +165,7 @@ const ApplicationTile = (props) => {
             </Paper>
           </Grid>
           {application.status === "accepted" ||
-          application.status === "finished" ? (
+            application.status === "finished" ? (
             <>
               <Grid item>
                 <Button
@@ -185,7 +185,7 @@ const ApplicationTile = (props) => {
                   variant="contained"
                   color="secondary"
                   className={classes.statusBlock}
-                  onClick={()=>{
+                  onClick={() => {
                     window.location.url(`https://api.whatsapp.com/send?phone=+ ${application.recruiter.contactNumber} + '&text=%20' + Enter Your Message`)
                   }}
                 >
@@ -225,12 +225,13 @@ const ApplicationTile = (props) => {
             Submit
           </Button>
         </Paper>
-      </Modal>      
+      </Modal>
     </Paper>
   );
 };
 
 const Applications = (props) => {
+  const bigScreen = useMediaQuery('(min-width: 1005px)');
   const setPopup = useContext(SetPopupContext);
   const [applications, setApplications] = useState([]);
   const [showSpinner, setShowSpinner] = useState(false);
@@ -273,7 +274,7 @@ const Applications = (props) => {
       style={{ padding: "30px", minHeight: "93vh" }}
     >
       <Grid item>
-        <Typography variant="h2">Applications</Typography>
+        <Typography variant={bigScreen ? "h2" : 'h6'}>Applications</Typography>
       </Grid>
       <Grid
         container

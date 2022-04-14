@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { Grid, makeStyles } from "@material-ui/core";
 
 import Welcome, { ErrorPage } from "./component/Welcome";
-import Navbar from "./component/Navbar";
+import Navbaar from "./component/Navbar";
 import Login from "./component/Login";
 import Logout from "./component/Logout";
 import Signup from "./component/Signup";
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     minHeight: "98vh",
-    paddingTop: "64px",
+
     boxSizing: "border-box",
     width: "100%",
   },
@@ -45,7 +45,7 @@ function App() {
       <SetPopupContext.Provider value={setPopup}>
         <Grid container direction="column">
           <Grid item xs>
-            <Navbar />
+            <Navbaar />
           </Grid>
           <Grid item className={classes.body}>
             <Switch>
@@ -86,9 +86,7 @@ function App() {
               <Route exact path="/employees">
                 <AcceptedApplicants />
               </Route>
-              <Route>
-                <ErrorPage />
-              </Route>
+              <Route component={ErrorPage} />
             </Switch>
           </Grid>
         </Grid>

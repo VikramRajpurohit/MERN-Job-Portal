@@ -18,6 +18,7 @@ import {
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import Pagination from "@material-ui/lab/Pagination";
+import { useMediaQuery } from '../Media.tsx'
 import axios from "axios";
 import SearchIcon from "@material-ui/icons/Search";
 import FilterListIcon from "@material-ui/icons/FilterList";
@@ -50,9 +51,11 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+  formControlLabel: { fontSize: "30px", "& label": { fontSize: "0.6rem" } }
 }));
 
 const JobTile = (props) => {
+  const bigScreen = useMediaQuery('(min-width: 1005px)');
   const classes = useStyles();
   const { job } = props;
   const setPopup = useContext(SetPopupContext);
@@ -102,14 +105,14 @@ const JobTile = (props) => {
   const deadline = new Date(job.deadline).toLocaleDateString();
 
   return (
-    <Paper className={classes.jobTileOuter} elevation={3}>
-      <Grid container>
-        <Grid container item xs={9} spacing={1} direction="column">
+    <Paper className={classes.jobTileOuter} elevation={3} style={{ paddingTop: 14, paddingBottom: 10 }}>
+      <Grid container >
+        <Grid container item xs={6} spacing={1} direction="column">
           <Grid item>
-            <Typography variant="h5">{job.title}</Typography>
+            <Typography variant={bigScreen ? "h5" : "h6"}>{job.title}</Typography>
           </Grid>
-          <Grid item>
-            <Rating value={job.rating !== -1 ? job.rating : null} readOnly />
+          <Grid item >
+            <Rating value={job.rating !== -1 ? job.rating : null} readOnly style={{ fontSize: bigScreen ? 20 : 17 }} />
           </Grid>
           <Grid item>Role : {job.jobType}</Grid>
           <Grid item>Salary : &#8377; {job.salary} per month</Grid>
@@ -120,25 +123,29 @@ const JobTile = (props) => {
           <Grid item>Posted By : {job.recruiter.name}</Grid>
           <Grid item>Application Deadline : {deadline}</Grid>
 
-          <Grid item>
+
+        </Grid>
+        <Grid item xs={6} style={{ maxWidth: 'none' }}>
+          <Grid item><span style={{ fontSize: bigScreen ? 22 : 20, fontWeight: 500 }}>Skills</span></Grid>
+          <Grid item style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'column' }}>
             {job.skillsets.map((skill) => (
-              <Chip label={skill} style={{ marginRight: "2px" }} />
+              <Chip label={skill} style={{ padding: 5, margin: 5 }} />
             ))}
           </Grid>
+
         </Grid>
-        <Grid item xs={3}>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={() => {
-              setOpen(true);
-            }}
-            disabled={userType() === "recruiter"}
-          >
-            Apply
-          </Button>
-        </Grid>
+        <Button
+          style={{ marginTop: 15 }}
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          onClick={() => {
+            setOpen(true);
+          }}
+          disabled={userType() === "recruiter"}
+        >
+          Apply
+        </Button>
       </Grid>
       <Modal open={open} onClose={handleClose} className={classes.popupDialog}>
         <Paper
@@ -153,6 +160,7 @@ const JobTile = (props) => {
           }}
         >
           <TextField
+
             label="Write SOP (upto 250 words)"
             multiline
             rows={8}
@@ -170,9 +178,17 @@ const JobTile = (props) => {
             }}
           />
           <Button
+            style={{
+              padding: '3px 19px',
+              marginRight: 10,
+              fontSize: '12px',
+              backgroundColor: '#5fd145',
+              color: '#ffff',
+              borderRadius: '4px',
+            }}
             variant="contained"
             color="primary"
-            style={{ padding: "10px 50px" }}
+
             onClick={() => handleApply()}
           >
             Submit
@@ -184,6 +200,7 @@ const JobTile = (props) => {
 };
 
 const FilterPopup = (props) => {
+  const bigScreen = useMediaQuery('(min-width: 1005px)');
   const classes = useStyles();
   const { open, handleClose, searchOptions, setSearchOptions, getData } = props;
   return (
@@ -192,11 +209,14 @@ const FilterPopup = (props) => {
         style={{
           padding: "50px",
           outline: "none",
-          minWidth: "50%",
+          paddingBottom: 10,
+          paddingTop: 20,
+          paddingRight: 52
+
         }}
       >
-        <Grid container direction="column" alignItems="center" spacing={3}>
-          <Grid container item alignItems="center">
+        <Grid container direction="column" alignItems="center" spacing={3} >
+          <Grid container item alignItems="center" style={{ padding: 0 }}>
             <Grid item xs={3}>
               Job Type
             </Grid>
@@ -205,12 +225,15 @@ const FilterPopup = (props) => {
               item
               xs={9}
               justify="space-around"
+              wrap="nowrap"
             // alignItems="center"
             >
-              <Grid item>
+              <Grid item >
                 <FormControlLabel
+                  style={{ fontSize: 12 }}
                   control={
                     <Checkbox
+
                       name="fullTime"
                       checked={searchOptions.jobType.fullTime}
                       onChange={(event) => {
@@ -224,7 +247,8 @@ const FilterPopup = (props) => {
                       }}
                     />
                   }
-                  label="Full Time"
+
+                  label={<Typography style={{ fontSize: bigScreen ? 18 : 15 }}>Full Time</Typography>}
                 />
               </Grid>
               <Grid item>
@@ -269,7 +293,7 @@ const FilterPopup = (props) => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid container item alignItems="center">
+          <Grid container item alignItems="center" style={{ padding: 0 }}>
             <Grid item xs={3}>
               Salary
             </Grid>
@@ -293,7 +317,7 @@ const FilterPopup = (props) => {
               />
             </Grid>
           </Grid>
-          <Grid container item alignItems="center">
+          <Grid container item alignItems="center" style={{ padding: 0 }}>
             <Grid item xs={3}>
               Duration
             </Grid>
@@ -322,7 +346,7 @@ const FilterPopup = (props) => {
               </TextField>
             </Grid>
           </Grid>
-          <Grid container item alignItems="center">
+          <Grid container item alignItems="center" style={{ padding: 0 }}>
             <Grid item xs={3}>
               Sort
             </Grid>
@@ -515,6 +539,7 @@ const FilterPopup = (props) => {
 };
 
 const Home = (props) => {
+  const bigScreen = useMediaQuery('(min-width: 1005px)');
   const [jobs, setJobs] = useState([]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
@@ -645,7 +670,7 @@ const Home = (props) => {
           alignItems="center"
         >
           <Grid item xs>
-            <Typography variant="h2">Jobs</Typography>
+            <Typography variant={bigScreen ? "h2" : 'h5'}>Jobs</Typography>
           </Grid>
           <Grid item xs>
             <TextField
@@ -671,7 +696,7 @@ const Home = (props) => {
                   </InputAdornment>
                 ),
               }}
-              style={{ width: "500px" }}
+              style={{ width: bigScreen ? "500px" : "auto", fontSize: bigScreen ? 15 : 13 }}
               variant="outlined"
             />
           </Grid>
@@ -700,9 +725,9 @@ const Home = (props) => {
             </Typography>
           )}
         </Grid>
-        {/* <Grid item>
+        <Grid item>
           <Pagination count={10} color="primary" />
-        </Grid> */}
+        </Grid>
       </Grid>
       <FilterPopup
         open={filterOpen}

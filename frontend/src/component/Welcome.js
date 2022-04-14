@@ -1,4 +1,5 @@
 import { Grid, Typography } from "@material-ui/core";
+import { NavLink } from "react-router-dom";
 import HowItWorks from './HowItWorks.js'
 
 const Welcome = (props) => {
@@ -37,7 +38,7 @@ const Welcome = (props) => {
   );
 };
 
-export const ErrorPage = (props) => {
+export const ErrorPage = () => {
   return (
     <Grid
       container
@@ -49,6 +50,7 @@ export const ErrorPage = (props) => {
     >
       <Grid item>
         <Typography variant="h2">Error 404</Typography>
+        <NavLink to='/'>Go Back</NavLink>
       </Grid>
     </Grid>
   );
